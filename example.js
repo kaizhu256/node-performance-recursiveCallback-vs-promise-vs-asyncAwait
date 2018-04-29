@@ -66,7 +66,7 @@
     /*
      * this function will make an http-request using async/await design-pattern
      */
-        var error, request, response, timerTimeout;
+        var request, response, timerTimeout;
         try {
             response = await new Promise(function (resolve, reject) {
                 // init timeout
@@ -87,8 +87,7 @@
                 response.on('end', resolve);
                 response.on('error', reject);
             });
-        } catch (errorCaught) {
-            error = errorCaught;
+        } catch (error) {
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
             // cleanup request and response
