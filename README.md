@@ -83,7 +83,7 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
     /*
      * this function will make an http-request using async/await design-pattern
      */
-        var error, request, response, timerTimeout;
+        var request, response, timerTimeout;
         try {
             response = await new Promise(function (resolve, reject) {
                 // init timeout
@@ -104,19 +104,20 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
                 response.on('end', resolve);
                 response.on('error', reject);
             });
-        } catch (errorCaught) {
-            error = errorCaught;
+        } catch (error) {
+            // cleanup timerTimeout
+            clearTimeout(timerTimeout);
+            // cleanup request and response
+            if (request) {
+                request.destroy();
+            }
+            if (response) {
+                response.destroy();
+            }
+            onError(error);
+            return;
         }
-        // cleanup timerTimeout
-        clearTimeout(timerTimeout);
-        // cleanup request and response
-        if (request) {
-            request.destroy();
-        }
-        if (response) {
-            response.destroy();
-        }
-        onError(error);
+        onError();
     };
     /* jslint-ignore-end */
 
@@ -254,7 +255,8 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
             // init local var
             local.clientHttpRequestUrl = 'http://localhost:3000';
             local.version = process.version;
-            local.templateRenderAndPrint('state {{state}} - node ({{version}})');
+            local.versionsJson = JSON.stringify(process.versions, null, 4);
+            local.templateRenderAndPrint('state {{state}} - node ({{version}}) {{versionsJson}}');
             // create simple http-server that responds with random 200 or 500 statusCode
             local.http.createServer(function (request, response) {
                 request
@@ -366,7 +368,7 @@ state {{state}} - {{clientHttpRequest}} - requestsPassed = {{requestsPassed}}\n\
 state {{state}} - {{clientHttpRequest}} - requestsFailed = {{requestsFailed}} ({{errorDictJson}})\n\
 state {{state}} - {{clientHttpRequest}} - {{requestsPerSecond}} requests / second\n\
 state {{state}} - mean requests / second = {{resultJson}}\n\
-',
+'
 /* jslint-ignore-end */
             );
             // repeat test with other design-patterns

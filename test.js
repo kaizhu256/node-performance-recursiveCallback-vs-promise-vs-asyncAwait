@@ -20,7 +20,6 @@
     case 'v4':
     case 'v5':
     case 'v6':
-    case 'v7':
         require('./example.legacy.js');
         break;
     default:
