@@ -90,6 +90,10 @@
         } catch (error) {
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
+            // cleanup response
+            if (response) {
+                response.destroy();
+            }
             onError(error);
             return;
         }
@@ -125,6 +129,10 @@
         }).then(onError).catch(function (error) {
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
+            // cleanup response
+            if (response) {
+                response.destroy();
+            }
             onError(error);
         });
     };
@@ -164,6 +172,10 @@
                 }
                 // cleanup timerTimeout
                 clearTimeout(timerTimeout);
+                // cleanup response
+                if (response) {
+                    response.destroy();
+                }
                 isDone = true;
                 onError(error);
             }
