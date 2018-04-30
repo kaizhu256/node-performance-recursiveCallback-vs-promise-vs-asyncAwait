@@ -90,13 +90,10 @@
         //!! } catch (error) {
             //!! // cleanup timerTimeout
             //!! clearTimeout(timerTimeout);
-            //!! // cleanup request and response
-            //!! if (request && request.destroy) {
-                //!! request.destroy();
-            //!! }
-            //!! if (response && response.destroy) {
-                //!! response.destroy();
-            //!! }
+                //!! // cleanup response
+                //!! if (response && response.destroy) {
+                    //!! response.destroy();
+                //!! }
             //!! onError(error);
             //!! return;
         //!! }
@@ -132,10 +129,7 @@
         }).then(onError).catch(function (error) {
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
-            // cleanup request and response
-            if (request && request.destroy) {
-                request.destroy();
-            }
+            // cleanup response
             if (response && response.destroy) {
                 response.destroy();
             }
@@ -178,10 +172,7 @@
                 }
                 // cleanup timerTimeout
                 clearTimeout(timerTimeout);
-                // cleanup request and response
-                if (request && request.destroy) {
-                    request.destroy();
-                }
+                // cleanup response
                 if (response && response.destroy) {
                     response.destroy();
                 }
