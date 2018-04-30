@@ -26,9 +26,9 @@ env:
 language:
     - node_js
 node_js:
-    - 10
+    - 7
 script:
-    - REQUESTS_PER_TICK=50 node example.js
+    - REQUESTS_PER_TICK=20 node --harmony example.js
 services:
     - docker
 # http://docs.travis-ci.com/user/workers/container-based-infrastructure
