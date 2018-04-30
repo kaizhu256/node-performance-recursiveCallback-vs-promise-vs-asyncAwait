@@ -69,7 +69,7 @@
     categories = [];
     series = [];
     window.data.data.forEach(function (element) {
-        categories.push('v8-' + element.v8 + ' /<br>node-' + element.node);
+        categories.push('v8-' + element.v8 + '<br>node-' + element.node);
         [
             'clientHttpRequestWithRecursiveCallback',
             'clientHttpRequestWithPromise',
