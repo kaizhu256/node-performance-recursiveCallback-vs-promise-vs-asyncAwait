@@ -26,14 +26,9 @@ env:
 language:
     - node_js
 node_js:
-    - 6
-    - 7
-    - 8
-    - 9
     - 10
-    - node
 script:
-    - node example.js
+    - REQUESTS_PER_TICK=50 node example.js
 services:
     - docker
 # http://docs.travis-ci.com/user/workers/container-based-infrastructure
