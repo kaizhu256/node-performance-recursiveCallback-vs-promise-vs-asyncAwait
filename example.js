@@ -90,15 +90,6 @@
         } catch (error) {
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
-            // cleanup request and response
-            try {
-                request.destroy();
-            } catch (ignore) {
-            }
-            try {
-                response.destroy();
-            } catch (ignore) {
-            }
             onError(error);
             return;
         }
@@ -134,15 +125,6 @@
         }).then(onError).catch(function (error) {
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
-            // cleanup request and response
-            try {
-                request.destroy();
-            } catch (ignore) {
-            }
-            try {
-                response.destroy();
-            } catch (ignore) {
-            }
             onError(error);
         });
     };
@@ -182,15 +164,6 @@
                 }
                 // cleanup timerTimeout
                 clearTimeout(timerTimeout);
-                // cleanup request and response
-                try {
-                    request.destroy();
-                } catch (ignore) {
-                }
-                try {
-                    response.destroy();
-                } catch (ignore) {
-                }
                 isDone = true;
                 onError(error);
             }
