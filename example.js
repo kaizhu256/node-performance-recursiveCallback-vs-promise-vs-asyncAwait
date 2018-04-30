@@ -94,6 +94,7 @@
             try {
                 request.destroy();
             } catch (ignore) {
+            }
             try {
                 response.destroy();
             } catch (ignore) {
@@ -137,6 +138,7 @@
             try {
                 request.destroy();
             } catch (ignore) {
+            }
             try {
                 response.destroy();
             } catch (ignore) {
@@ -184,6 +186,7 @@
                 try {
                     request.destroy();
                 } catch (ignore) {
+                }
                 try {
                     response.destroy();
                 } catch (ignore) {
