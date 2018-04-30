@@ -238,7 +238,8 @@
             // init local var
             local.clientHttpRequestUrl = 'http://localhost:3000';
             local.version = process.version;
-            local.templateRenderAndPrint('state {{state}} - node ({{version}})');
+            local.versionsJson = JSON.stringify(process.versions, null, 4);
+            local.templateRenderAndPrint('state {{state}} - node ({{version}}) {{versionsJson}}');
             // create simple http-server that responds with random 200 or 500 statusCode
             local.http.createServer(function (request, response) {
                 request
