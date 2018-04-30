@@ -91,10 +91,10 @@
             //!! // cleanup timerTimeout
             //!! clearTimeout(timerTimeout);
             //!! // cleanup request and response
-            //!! if (request) {
+            //!! if (request && request.destroy) {
                 //!! request.destroy();
             //!! }
-            //!! if (response) {
+            //!! if (response && response.destroy) {
                 //!! response.destroy();
             //!! }
             //!! onError(error);
@@ -133,10 +133,10 @@
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
             // cleanup request and response
-            if (request) {
+            if (request && request.destroy) {
                 request.destroy();
             }
-            if (response) {
+            if (response && response.destroy) {
                 response.destroy();
             }
             onError(error);
@@ -179,10 +179,10 @@
                 // cleanup timerTimeout
                 clearTimeout(timerTimeout);
                 // cleanup request and response
-                if (request) {
+                if (request && request.destroy) {
                     request.destroy();
                 }
-                if (response) {
+                if (response && response.destroy) {
                     response.destroy();
                 }
                 isDone = true;
@@ -266,8 +266,9 @@
             if (local.clientHttpRequestState < 100) {
                 switch (Math.floor(Math.random() * 3)) {
                 case 0:
-                    //!! local.clientHttpRequest = 'clientHttpRequestWithAsyncAwait';
-                    local.clientHttpRequest = 'clientHttpRequestWithRecursiveCallback';
+                    local.clientHttpRequest = local.clientHttpRequestWithAsyncAwait
+                        ? 'clientHttpRequestWithAsyncAwait'
+                        : 'clientHttpRequestWithRecursiveCallback';
                     break;
                 case 1:
                     local.clientHttpRequest = global.Promise
