@@ -26,9 +26,9 @@ env:
 language:
     - node_js
 node_js:
-    - 7
+    - 10
 script:
-    - REQUESTS_PER_TICK=20 node --harmony-async-await example.js
+    - REQUESTS_PER_TICK=20 node example.js
 services:
     - docker
 # http://docs.travis-ci.com/user/workers/container-based-infrastructure
