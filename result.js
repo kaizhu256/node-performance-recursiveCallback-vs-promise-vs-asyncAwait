@@ -169,7 +169,8 @@
             version: categories[ii],
             clientHttpRequestWithRecursiveCallback: element.clientHttpRequestWithRecursiveCallback,
             clientHttpRequestWithPromise: element.clientHttpRequestWithPromise,
-            clientHttpRequestWithAsyncAwait: element.clientHttpRequestWithAsyncAwait
+            clientHttpRequestWithAsyncAwait: element.clientHttpRequestWithAsyncAwait,
+            recursiveCallbackVsPromiseRatio: series[0].data[ii] / series[1].data[ii]
         };
     }), null, 4);
 }());
