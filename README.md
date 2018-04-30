@@ -41,18 +41,18 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
  * state 1 - node (v9.11.1)
  * state 2 - http-server listening on port 3000
  * ...
- * state 3 - clientHttpRequestWithPromise - flooding http-server with request "http://localhost:3000"
+ * state 3 - clientHttpRequestWithRecursiveCallback - flooding http-server with request "http://localhost:3000"
  * state 5 - clientHttpRequestWithRecursiveCallback - testRun #99
- * state 5 - clientHttpRequestWithRecursiveCallback - requestsTotal = 16980 (in 5008 ms)
- * state 5 - clientHttpRequestWithRecursiveCallback - requestsPassed = 8523
- * state 5 - clientHttpRequestWithRecursiveCallback - requestsFailed = 8457 ({
+ * state 5 - clientHttpRequestWithRecursiveCallback - requestsTotal = 14690 (in 5009 ms)
+ * state 5 - clientHttpRequestWithRecursiveCallback - requestsPassed = 7349
+ * state 5 - clientHttpRequestWithRecursiveCallback - requestsFailed = 7341 ({
  *     "statusCode - 500": true
  * })
- * state 5 - clientHttpRequestWithRecursiveCallback - 3391 requests / second
+ * state 5 - clientHttpRequestWithRecursiveCallback - 2933 requests / second
  * state 5 - mean requests / second = {
- *     "clientHttpRequestWithRecursiveCallback": 3197 (144 sigma),
- *     "clientHttpRequestWithAsyncAwait": 3083 (167 sigma),
- *     "clientHttpRequestWithPromise": 2697 (49 sigma)
+ *     "clientHttpRequestWithRecursiveCallback": "3059 (156 sigma)",
+ *     "clientHttpRequestWithPromise": "2615 (106 sigma)",
+ *     "clientHttpRequestWithAsyncAwait": "2591 (71 sigma)"
  * }
  *
  * state 6 - process.exit(0)

@@ -2,7 +2,7 @@
     bitwise: true,
     browser: true,
     maxerr: 4,
-    maxlen: 200,
+    maxlen: 100,
     node: true,
     nomen: true,
     regexp: true,
@@ -11,6 +11,36 @@
 
 (function () {
     'use strict';
+    var Highcharts, avg, categories, local, series, std, tmp;
+    local = {};
+    // select-all
+    local.domOnEventSelecAllInsidePre = function (event) {
+    /*
+     * this function will, if triggered inside <pre> element,
+     * only select-all inside the <pre> element
+     * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse
+     */
+        var range, selection;
+        // init event-handling
+        if (event && event.modeInit) {
+            document.removeEventListener("keydown", window.domOnEventSelecAllInsidePre);
+            window.domOnEventSelecAllInsidePre = local.domOnEventSelecAllInsidePre;
+            document.addEventListener("keydown", window.domOnEventSelecAllInsidePre);
+        }
+        // select-all inside <pre> element
+        if (event &&
+                event.code === "KeyA" &&
+                (event.ctrlKey || event.metaKey) &&
+                event.target.closest("pre")) {
+            range = document.createRange();
+            range.selectNodeContents(event.target.closest("pre"));
+            selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            event.preventDefault();
+        }
+    };
+    local.domOnEventSelecAllInsidePre({ modeInit: true });
     // init debug_inline
     console['debug_inlineConsoleError'.replace('_i', 'I')] =
         console['debug_inlineConsoleError'.replace('_i', 'I')] ||
@@ -36,7 +66,6 @@
     ((typeof window === 'object' && window) || global)['debug_inline'.replace('_i', 'I')] =
         console['debug_inline'.replace('_i', 'I')];
     // plot data
-    var Highcharts, avg, categories, series, std, tmp;
     categories = [];
     series = [];
     window.data.data.forEach(function (element) {
@@ -132,4 +161,15 @@
         //!! }],
         series: series
     });
+    // output json data to pre1
+    document.querySelector(
+        '#pre1'
+    ).textContent = JSON.stringify(window.data.data.map(function (element, ii) {
+        return {
+            version: categories[ii],
+            clientHttpRequestWithRecursiveCallback: element.clientHttpRequestWithRecursiveCallback,
+            clientHttpRequestWithPromise: element.clientHttpRequestWithPromise,
+            clientHttpRequestWithAsyncAwait: element.clientHttpRequestWithAsyncAwait
+        };
+    }), null, 4);
 }());
