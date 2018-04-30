@@ -1,35 +1,18 @@
-# node-performance-recursiveCallback-vs-promise-vs-asyncAwait
-benchmark js design-patterns recursive-callbacks vs promises vs async/await
-
-#### result
-```shell
-state 1 - node (v9.11.1)
-state 2 - http-server listening on port 3000
-...
-state 3 - clientHttpRequestWithRecursiveCallback - flooding http-server with request "http://localhost:3000"
-state 5 - clientHttpRequestWithRecursiveCallback - testRun #99
-state 5 - clientHttpRequestWithRecursiveCallback - requestsTotal = 14690 (in 5009 ms)
-state 5 - clientHttpRequestWithRecursiveCallback - requestsPassed = 7349
-state 5 - clientHttpRequestWithRecursiveCallback - requestsFailed = 7341 ({
-    "statusCode - 500": true
-})
-state 5 - clientHttpRequestWithRecursiveCallback - 2933 requests / second
-state 5 - mean requests / second = {
-    "clientHttpRequestWithRecursiveCallback": "3059 (156 sigma)",
-    "clientHttpRequestWithPromise": "2615 (106 sigma)",
-    "clientHttpRequestWithAsyncAwait": "2591 (71 sigma)"
-}
-```
-
-#### instructions
-to reproduce result, run this standalone, zero-dependency/zero-config script:
-
-```javascript
 /*
  * example.js
  *
- * this zero-dependency example will demo a simple (60 sloc), high-performance express-middleware
- * that can broadcast a single fs.readFile() operation to multiple server-requests
+ * this zero-dependency example will benchmark nodejs' client-based http-requests throughput,
+ * using recursive-callback/promise/async-await design-patterns.
+ *
+ * the program will make 100 test-runs (randomly picking a design-pattern per test-run),
+ * measuring client-based http-requests/seconde over a 5000 ms interval.
+ * it will save the 16 most recent test-runs for each design-pattern,
+ * and print the mean and standard deviation.
+ * any test-run with unusual errors (timeouts, econnreset, etc),
+ * will be discarded and not used in calculations
+ *
+ * the script accepts one env variable $REQUESTS_PER_TICK, which defaults to 10
+ * (you can try increasing it if you have a high-performance machine)
  *
  *
  *
@@ -41,18 +24,18 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
  * state 1 - node (v9.11.1)
  * state 2 - http-server listening on port 3000
  * ...
- * state 3 - clientHttpRequestWithPromise - flooding http-server with request "http://localhost:3000"
+ * state 3 - clientHttpRequestWithRecursiveCallback - flooding http-server with request "http://localhost:3000"
  * state 5 - clientHttpRequestWithRecursiveCallback - testRun #99
- * state 5 - clientHttpRequestWithRecursiveCallback - requestsTotal = 16980 (in 5008 ms)
- * state 5 - clientHttpRequestWithRecursiveCallback - requestsPassed = 8523
- * state 5 - clientHttpRequestWithRecursiveCallback - requestsFailed = 8457 ({
+ * state 5 - clientHttpRequestWithRecursiveCallback - requestsTotal = 14690 (in 5009 ms)
+ * state 5 - clientHttpRequestWithRecursiveCallback - requestsPassed = 7349
+ * state 5 - clientHttpRequestWithRecursiveCallback - requestsFailed = 7341 ({
  *     "statusCode - 500": true
  * })
- * state 5 - clientHttpRequestWithRecursiveCallback - 3391 requests / second
+ * state 5 - clientHttpRequestWithRecursiveCallback - 2933 requests / second
  * state 5 - mean requests / second = {
- *     "clientHttpRequestWithRecursiveCallback": 3197 (144 sigma),
- *     "clientHttpRequestWithAsyncAwait": 3083 (167 sigma),
- *     "clientHttpRequestWithPromise": 2697 (49 sigma)
+ *     "clientHttpRequestWithRecursiveCallback": "3059 (156 sigma)",
+ *     "clientHttpRequestWithPromise": "2615 (106 sigma)",
+ *     "clientHttpRequestWithAsyncAwait": "2591 (71 sigma)"
  * }
  *
  * state 6 - process.exit(0)
@@ -83,7 +66,7 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
     /*
      * this function will make an http-request using async/await design-pattern
      */
-        var error, request, response, timerTimeout;
+        var request, response, timerTimeout;
         try {
             response = await new Promise(function (resolve, reject) {
                 // init timeout
@@ -104,19 +87,20 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
                 response.on('end', resolve);
                 response.on('error', reject);
             });
-        } catch (errorCaught) {
-            error = errorCaught;
+        } catch (error) {
+            // cleanup timerTimeout
+            clearTimeout(timerTimeout);
+            // cleanup request and response
+            if (request) {
+                request.destroy();
+            }
+            if (response) {
+                response.destroy();
+            }
+            onError(error);
+            return;
         }
-        // cleanup timerTimeout
-        clearTimeout(timerTimeout);
-        // cleanup request and response
-        if (request) {
-            request.destroy();
-        }
-        if (response) {
-            response.destroy();
-        }
-        onError(error);
+        onError();
     };
     /* jslint-ignore-end */
 
@@ -386,4 +370,3 @@ state {{state}} - mean requests / second = {{resultJson}}\n\
     local.state = 0;
     local.main();
 }());
-```
