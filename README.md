@@ -118,11 +118,13 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
             // cleanup request and response
-            if (request && request.destroy) {
+            try {
                 request.destroy();
+            } catch (ignore) {
             }
-            if (response && response.destroy) {
+            try {
                 response.destroy();
+            } catch (ignore) {
             }
             onError(error);
             return;
@@ -160,11 +162,13 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
             // cleanup request and response
-            if (request && request.destroy) {
+            try {
                 request.destroy();
+            } catch (ignore) {
             }
-            if (response && response.destroy) {
+            try {
                 response.destroy();
+            } catch (ignore) {
             }
             onError(error);
         });
@@ -206,11 +210,13 @@ to reproduce result, run this standalone, zero-dependency/zero-config script:
                 // cleanup timerTimeout
                 clearTimeout(timerTimeout);
                 // cleanup request and response
-                if (request && request.destroy) {
+                try {
                     request.destroy();
+                } catch (ignore) {
                 }
-                if (response && response.destroy) {
+                try {
                     response.destroy();
+                } catch (ignore) {
                 }
                 isDone = true;
                 onError(error);
