@@ -1,0 +1,37 @@
+before_install:
+    # init xvfb
+    # http://docs.travis-ci.com/user/gui-and-headless-browsers/
+    - export DISPLAY=:99.0 && sh -e /etc/init.d/xvfb start
+    # bug-workaround for "npm install [package name] removes packages"
+    # https://github.com/npm/npm/issues/17379
+    # https://github.com/travis-ci/travis-ci/issues/4653#issuecomment-379397837
+    - dpkg --compare-versions `npm -v` ge 5.8 || npm i -g npm@^5.8
+branches:
+    only:
+    - alpha
+    - beta
+    - benchmark
+    - cron
+    - docker.base
+    - docker.electron
+    - docker.latest
+    - docker.tmp
+    - master
+    - publish
+    - task
+env:
+    global:
+    # this value is auto-created by shTravisCryptoAesEncryptYml
+    - secure: BIqcyKfD3nKLoI44aMVssuxAKcojzOgV2pT9XhEiN09UwKsGEYNPrCGKOvbr+gTIQ89nVHfZ7FGM0xJmFKyKN0cKUMFJNwpvJKQtmezb/qCoPWR4EWdkfbjvL+2K+qYclKd5JbHQFyxGyF6P5Kp3FHeIz3x+/ZyAgFDRoKuRs+bf5ug2JrECprQLkA69ZEO48Mmoix1Eh5spvF/wIBmPmyoBqIytIKmYSwmHGyj5aAiW0dzY2UiP2hc4cSOeS1Gxn4YVb25ELba2PTbsTOgChq6XzFOz04F3ioPEE8+ITs9ffuP9tosDpw/LE29kvpP2ySewOuIpndwqBMj/aj7K+u6HsDTKltRpsS1aeln95fVhbrmpEX45ajnMMd/wuXXhTxxJ2v+eDOW0mBTdmtO7FhbV4X/GDY9Gbfb9c6wbokiC3+YMm0FDiZSFLL3+jbXtr8WuJjQNt8KMcNClBdk4m7sqJ2l6kZ8pSBODT4ofgBIO3d59LAQOP6z+cVsXgPyjZZS5VtZe4lCmClyyDhTsj+GRA4RnFTUE+ans3LQUj0IV2O8YI9ido9JH04Z0rqvmia0O3+CHQZFELO66PNiC04R3FxH2DxT7o/UxEKnuYEXp0CPjieoubbzLxHWUYIaUWPBCmC1ilwRT+3CKUAnylCUXdP6crza1+5Ew+0woOgg= # CRYPTO_AES_KEY
+language:
+    - node_js
+node_js:
+    # - 8
+    - node
+script:
+    - npm run build-ci
+services:
+    - docker
+# http://docs.travis-ci.com/user/workers/container-based-infrastructure
+sudo:
+    false
