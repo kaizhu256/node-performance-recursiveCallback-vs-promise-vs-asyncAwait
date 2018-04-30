@@ -108,9 +108,13 @@ textarea {
 </head>
 <body style="background: #eef; font-family: Arial, Helvetica, sans-serif; margin: 20px 40px;">
 
-<h2>visualization of <a href="https://travis-ci.org/kaizhu256/node-performance-recursiveCallback-vs-promise-vs-asyncAwait/builds/372961240">travis-ci build #20</a></h2>
+<h2>visualization of
+<a href="https://travis-ci.org/kaizhu256/node-performance-recursiveCallback-vs-promise-vs-asyncAwait/builds/372961240">travis-ci build #20</a>
+and
+<a href="https://travis-ci.org/kaizhu256/node-performance-recursiveCallback-vs-promise-vs-asyncAwait/builds/373134575">travis-ci build #21</a>
+</h2>
 
-<h4>goto <a href="https://github.com/kaizhu256/node-performance-recursiveCallback-vs-promise-vs-asyncAwait">github-page kaizhu256/node-performance-recursiveCallback-vs-promise-vs-asyncAwait</a></h4>
+<h4>return to <a href="https://github.com/kaizhu256/node-performance-recursiveCallback-vs-promise-vs-asyncAwait">github-repo</a></h4>
 
 <div id="container" style="width:100%; height:400px;"></div>
 
@@ -125,6 +129,12 @@ window.jsonpCallback = function (data) {
 };
 </script>
 <script src="result.jsonp.js"></script>
+<script>
+window.jsonpCallback = function (data) {
+    window.data2 = data;
+};
+</script>
+<script src="result2.jsonp.js"></script>
 <script src="result.js"></script>
 </body>
 </html>

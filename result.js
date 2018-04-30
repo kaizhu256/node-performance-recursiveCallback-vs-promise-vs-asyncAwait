@@ -95,6 +95,32 @@
             tmp.data.push([avg - std, avg + std]);
         });
     });
+    window.data2.data.forEach(function (element) {
+        [
+            'clientHttpRequestWithRecursiveCallback',
+            'clientHttpRequestWithPromise',
+            'clientHttpRequestWithAsyncAwait'
+        ].forEach(function (name, ii) {
+            // plot data
+            tmp = series[ii + 6] = series[ii + 6] || {
+                data: [],
+                name: name + '-rerun'
+            };
+            avg = Number(String(element[name]).split(' ')[0]) || 0;
+            tmp.data.push(avg);
+            // plot error
+            tmp = series[ii + 9] = series[ii + 9] || {
+                data: [],
+                name: name + '-rerun error',
+                tooltip: {
+                    pointFormat: '(error range: {point.low}-{point.high})<br/>'
+                },
+                type: 'errorbar'
+            };
+            std = Number(String(String(element[name]).split(' ')[1]).slice(1)) || 0;
+            tmp.data.push([avg - std, avg + std]);
+        });
+    });
     Highcharts = window.Highcharts;
     Highcharts.chart('container', {
         chart: {
@@ -161,16 +187,28 @@
         //!! }],
         series: series
     });
-    // output json data to pre1
-    document.querySelector(
-        '#pre1'
-    ).textContent = JSON.stringify(window.data.data.map(function (element, ii) {
-        return {
+    tmp = [];
+    window.data.data.forEach(function (element, ii) {
+        tmp.push({
             version: categories[ii],
             clientHttpRequestWithRecursiveCallback: element.clientHttpRequestWithRecursiveCallback,
             clientHttpRequestWithPromise: element.clientHttpRequestWithPromise,
             clientHttpRequestWithAsyncAwait: element.clientHttpRequestWithAsyncAwait,
             recursiveCallbackVsPromiseRatio: series[0].data[ii] / series[1].data[ii]
-        };
-    }), null, 4);
+        });
+    });
+    window.data2.data.forEach(function (element, ii) {
+        tmp.push({
+            version: categories[ii],
+            'clientHttpRequestWithRecursiveCallback-rerun':
+                element.clientHttpRequestWithRecursiveCallback,
+            'clientHttpRequestWithPromise-rerun': element.clientHttpRequestWithPromise,
+            'clientHttpRequestWithAsyncAwait-rerun': element.clientHttpRequestWithAsyncAwait,
+            'recursiveCallbackVsPromiseRatio-rerun': series[0].data[ii] / series[1].data[ii]
+        });
+    });
+    // output json data to pre1
+    document.querySelector(
+        '#pre1'
+    ).textContent = JSON.stringify(tmp, null, 4);
 }());
