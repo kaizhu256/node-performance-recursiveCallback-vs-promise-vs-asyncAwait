@@ -351,7 +351,7 @@ state {{state}} - {{clientHttpRequest}} - requestsPassed = {{requestsPassed}}\n\
 state {{state}} - {{clientHttpRequest}} - requestsFailed = {{requestsFailed}} ({{errorDictJson}})\n\
 state {{state}} - {{clientHttpRequest}} - {{requestsPerSecond}} requests / second\n\
 state {{state}} - mean requests / second = {{resultJson}}\n\
-',
+'
 /* jslint-ignore-end */
             );
             // repeat test with other design-patterns
