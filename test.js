@@ -20,8 +20,8 @@
     case 'v4':
     case 'v5':
     case 'v6':
-        require('fs').readFileSync('./example.js')
-            .replace((/jslint-ignore-begin[\S\s]*?jslint-ignore-end/), '');
+        require('vm').runInThisContext(require('fs').readFileSync('./example.js', 'utf8')
+            .replace((/jslint-ignore-begin[\S\s]*?jslint-ignore-end/), ''));
         break;
     default:
         require('./example.js');
