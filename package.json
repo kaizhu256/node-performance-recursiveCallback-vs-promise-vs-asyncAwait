@@ -8,6 +8,7 @@
         "url": "https://github.com/kaizhu256/node-performance-recursiveCallback-vs-promise-vs-asyncAwait.git"
     },
     "scripts": {
+        "start": "utility2 start",
         "test": "node test.js"
     },
     "version": "0.0.1"
