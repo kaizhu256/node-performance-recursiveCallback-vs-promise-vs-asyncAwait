@@ -91,11 +91,12 @@
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
             // cleanup request and response
-            if (request && request.destroy) {
+            try {
                 request.destroy();
-            }
-            if (response && response.destroy) {
+            } catch (ignore) {
+            try {
                 response.destroy();
+            } catch (ignore) {
             }
             onError(error);
             return;
@@ -133,11 +134,12 @@
             // cleanup timerTimeout
             clearTimeout(timerTimeout);
             // cleanup request and response
-            if (request && request.destroy) {
+            try {
                 request.destroy();
-            }
-            if (response && response.destroy) {
+            } catch (ignore) {
+            try {
                 response.destroy();
+            } catch (ignore) {
             }
             onError(error);
         });
@@ -179,11 +181,12 @@
                 // cleanup timerTimeout
                 clearTimeout(timerTimeout);
                 // cleanup request and response
-                if (request && request.destroy) {
+                try {
                     request.destroy();
-                }
-                if (response && response.destroy) {
+                } catch (ignore) {
+                try {
                     response.destroy();
+                } catch (ignore) {
                 }
                 isDone = true;
                 onError(error);
