@@ -5,7 +5,7 @@ before_install:
     # bug-workaround for "npm install [package name] removes packages"
     # https://github.com/npm/npm/issues/17379
     # https://github.com/travis-ci/travis-ci/issues/4653#issuecomment-379397837
-    - dpkg --compare-versions `npm -v` ge 5.8 || npm i -g npm@^5.8
+    # - dpkg --compare-versions `npm -v` ge 5.8 || npm i -g npm@^5.8
 branches:
     only:
     - alpha
@@ -27,7 +27,7 @@ language:
     - node_js
 node_js:
     - 0.9
-    - 10
+    #!! - 10
 script:
     - npm test
 services:

@@ -13,6 +13,7 @@
 'use strict';
 (function () {
     switch (process.version.split('.')[0]) {
+    case 'v0':
     case 'v1':
     case 'v2':
     case 'v3':
