@@ -142,8 +142,8 @@
                     color: Highcharts.getOptions().colors[1]
                 }
             },
-            max: 4900,
-            min: 1700,
+            //!! max: 4900,
+            min: 1500,
             title: {
                 text: 'client-http-requests / second'
             }
